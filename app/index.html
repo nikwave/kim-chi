@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<!-- Иконка «На экран Домой» открывает обычный Safari (не отдельное приложение):
+     в Safari проверены микрофон и запрет гашения экрана. -->
+<meta name="apple-mobile-web-app-title" content="Ким и Чи">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icon-512.png">
+<meta name="theme-color" content="#efe3ff">
+<title>Ким и Чи ♡ собеседник</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap">
+<link rel="stylesheet" href="css/app.css?v=7">
+</head>
+<body>
+
+<!-- ===== Рисунки: амадина, звёздочка, облако, сердечко, нотка ===== -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="finch" viewBox="0 0 130 110">
+      <!-- хвост в чёрно-белую полоску -->
+      <g transform="rotate(-18 30 62)">
+        <rect x="2" y="54" width="34" height="16" rx="8" fill="#2b2b33"/>
+        <rect x="8" y="54" width="5" height="16" fill="#fff"/>
+        <rect x="19" y="54" width="5" height="16" fill="#fff"/>
+      </g>
+      <!-- тело -->
+      <ellipse cx="62" cy="66" rx="38" ry="32" fill="#a7a9b8"/>
+      <ellipse cx="70" cy="78" rx="28" ry="20" fill="#fff6ef"/>
+      <!-- каштановый бок в белых точках -->
+      <ellipse cx="50" cy="72" rx="19" ry="13" fill="#d8834a"/>
+      <circle cx="42" cy="68" r="2.6" fill="#fff"/><circle cx="51" cy="66" r="2.6" fill="#fff"/>
+      <circle cx="59" cy="70" r="2.6" fill="#fff"/><circle cx="46" cy="76" r="2.6" fill="#fff"/>
+      <circle cx="55" cy="78" r="2.6" fill="#fff"/>
+      <!-- крыло -->
+      <path d="M38 56 Q60 44 76 60 Q60 66 38 56Z" fill="#8e90a2"/>
+      <!-- полосатое горлышко -->
+      <g stroke="#2b2b33" stroke-width="2.6" stroke-linecap="round">
+        <path d="M90 58 q5 2 10 0"/><path d="M89 63 q6 2 11 0"/><path d="M89 68 q5 2 9 0"/>
+      </g>
+      <!-- голова -->
+      <circle cx="90" cy="40" r="25" fill="#b1b3c2"/>
+      <!-- рыжая щёчка -->
+      <ellipse cx="96" cy="50" rx="10" ry="8" fill="#ff9b45"/>
+      <!-- «слёзка» под глазом -->
+      <path d="M85 44 L84.2 50" stroke="#fff" stroke-width="4.2" stroke-linecap="round"/>
+      <path d="M85 44 L84.2 50" stroke="#2b2b33" stroke-width="2.2" stroke-linecap="round"/>
+      <!-- глаз -->
+      <circle cx="92" cy="35" r="6.5" fill="#1f1b2e"/>
+      <circle cx="94.4" cy="32.6" r="2.4" fill="#fff"/>
+      <circle cx="90" cy="37.5" r="1.1" fill="#fff"/>
+      <!-- румянец -->
+      <ellipse cx="102" cy="44" rx="4.5" ry="3" fill="#ff9fc4" opacity=".75"/>
+      <!-- клюв -->
+      <path d="M111 33 Q126 39 112 48 Q108 41 111 33Z" fill="#ff5b4a"/>
+      <!-- лапки -->
+      <g stroke="#ff8a5b" stroke-width="3.2" stroke-linecap="round" fill="none">
+        <path d="M58 96 l-2 9 M56 105 l-5 2 M56 105 l3 3"/>
+        <path d="M74 96 l1 9 M75 105 l-4 2 M75 105 l4 2"/>
+      </g>
+    </symbol>
+    <symbol id="star" viewBox="0 0 24 24">
+      <path d="M12 1.8l2.9 6.3 6.9.7-5.2 4.6 1.5 6.8L12 16.7l-6.1 3.5 1.5-6.8L2.2 8.8l6.9-.7z" fill="currentColor"
+        stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="cloud" viewBox="0 0 120 60">
+      <path d="M22 54h76a20 20 0 0 0 2-40 26 26 0 0 0-48-6 18 18 0 0 0-28 12A17 17 0 0 0 22 54z" fill="currentColor"/>
+    </symbol>
+    <symbol id="heart" viewBox="0 0 24 24">
+      <path d="M12 21s-8-5.2-8-11a4.6 4.6 0 0 1 8-3 4.6 4.6 0 0 1 8 3c0 5.8-8 11-8 11z" fill="currentColor"/>
+    </symbol>
+    <symbol id="note" viewBox="0 0 24 24">
+      <path d="M9 18a3 3 0 1 1-2-2.8V4l11-2v12a3 3 0 1 1-2-2.8V6.2L9 7.6z" fill="currentColor"/>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- ===== Небо: облака и звёзды ===== -->
+<div class="sky" aria-hidden="true">
+  <svg class="cloud c1"><use href="#cloud"/></svg>
+  <svg class="cloud c2"><use href="#cloud"/></svg>
+  <svg class="cloud c3"><use href="#cloud"/></svg>
+  <svg class="cloud c4"><use href="#cloud"/></svg>
+  <svg class="twinkle s1"><use href="#star"/></svg>
+  <svg class="twinkle s2"><use href="#star"/></svg>
+  <svg class="twinkle s3"><use href="#star"/></svg>
+  <svg class="twinkle s4"><use href="#star"/></svg>
+  <svg class="twinkle s5"><use href="#star"/></svg>
+  <svg class="twinkle s6"><use href="#star"/></svg>
+  <svg class="twinkle s7"><use href="#star"/></svg>
+  <svg class="twinkle s8"><use href="#star"/></svg>
+</div>
+
+<div id="app">
+
+<!-- ================= ГЛАВНЫЙ ЭКРАН ================= -->
+<section id="screen-main" class="screen on">
+  <header class="top">
+    <h1><span class="logo-star"><svg><use href="#star"/></svg></span> Ким и Чи <svg class="h-ico"><use href="#heart"/></svg></h1>
+    <nav>
+      <button class="link" data-go="settings">⚙︎ Настройка</button>
+      <button class="link" data-go="history">☁︎ История</button>
+    </nav>
+  </header>
+
+  <!-- сцена: Ким и Чи на веточке -->
+  <div class="scene" aria-hidden="true">
+    <svg class="branch" viewBox="0 0 600 60" preserveAspectRatio="none">
+      <path d="M0 40 Q150 20 300 34 T600 28" stroke="#b98fd8" stroke-width="10" fill="none" stroke-linecap="round"/>
+      <circle cx="120" cy="30" r="9" fill="#ffc6e0"/><circle cx="470" cy="26" r="9" fill="#ffc6e0"/>
+      <circle cx="300" cy="32" r="7" fill="#fff"/>
+    </svg>
+    <div class="bird kim"><svg><use href="#finch"/></svg><span class="tag">Ким</span></div>
+    <div class="bird chi"><svg><use href="#finch"/></svg><span class="tag">Чи</span></div>
+    <div class="notes-fly"><svg><use href="#note"/></svg><svg><use href="#note"/></svg><svg><use href="#note"/></svg></div>
+    <svg class="mini-heart"><use href="#heart"/></svg>
+  </div>
+
+  <div id="testBanner" class="banner test" hidden></div>
+  <div id="loadBanner" class="banner"></div>
+
+  <div class="card">
+    <div class="label"><svg class="ico"><use href="#star"/></svg> Режим</div>
+    <div class="seg" id="mode">
+      <button data-mode="respond" class="on">♪ Отвечать</button>
+      <button data-mode="listen">☁︎ Только слушать</button>
+    </div>
+    <p class="hint" id="altHint"></p>
+  </div>
+
+  <div class="card center startcard">
+    <button id="startBtn" class="start"><span class="sparkle">✦</span> Старт <span class="sparkle">✦</span></button>
+    <div class="live" id="live" hidden>
+      <div class="timer" id="timer">15:00</div>
+      <div class="status" id="status">Слушаю…</div>
+      <div class="counts" id="counts"></div>
+    </div>
+  </div>
+
+  <div class="card heard" id="heardCard" hidden>
+    <div class="label"><svg class="ico"><use href="#note"/></svg> Последний звук</div>
+    <div id="heard" class="heardline">—</div>
+  </div>
+
+  <div class="card row toggle-card">
+    <svg class="tiny-finch"><use href="#finch"/></svg>
+    <div class="grow">
+      <div class="label">Заводить разговор в тишине</div>
+      <div class="hint">Если птицы молчат, программа сама издаёт звук раз в <span id="silenceLabel">8–20 с</span></div>
+    </div>
+    <label class="switch"><input type="checkbox" id="silenceToggle"><span></span></label>
+  </div>
+
+  <div class="card row toggle-card">
+    <svg class="tiny-finch flip"><use href="#finch"/></svg>
+    <div class="grow">
+      <div class="label">Отвечать песней на песню</div>
+      <div class="hint" id="songIntLabel">Не чаще раза в 1 мин</div>
+    </div>
+    <label class="switch"><input type="checkbox" id="songsToggle"><span></span></label>
+  </div>
+
+  <div class="card">
+    <div class="label"><svg class="ico"><use href="#heart"/></svg> Заметка (ставит метку времени)</div>
+    <div class="notes">
+      <button class="note" data-note="Дерутся">💢 Дерутся</button>
+      <button class="note" data-note="Мечутся">🌀 Мечутся</button>
+      <button class="note" data-note="Подлетели к колонке">🎶 Подлетели к колонке</button>
+      <button class="note" data-note="Другое">✏️ Другое</button>
+    </div>
+    <div class="hint" id="noteAck">&nbsp;</div>
+  </div>
+
+  <div class="warn big">
+    <b>Важно ♡</b> Если птицы <b>мечутся, замирают, забиваются в угол или дерутся</b> — нажмите «Стоп»
+    и больше сегодня не запускайте.
+  </div>
+  <div class="warn">Не подключайте Bluetooth-колонку или наушники: звук пойдёт с опозданием, и программа будет отвечать невпопад. Только встроенный динамик iPad.</div>
+</section>
+
+<!-- ================= НАСТРОЙКА ================= -->
+<section id="screen-settings" class="screen">
+  <header class="top">
+    <button class="link back" data-go="main">← Назад</button>
+    <h1><svg class="h-ico"><use href="#star"/></svg> Настройка</h1>
+  </header>
+
+  <div class="card">
+    <h2>Микрофон и звук</h2>
+    <div id="micStatus" class="kv"></div>
+    <div class="warn">Bluetooth не используйте — только встроенный динамик и микрофон iPad.</div>
+  </div>
+
+  <div class="card">
+    <h2>Калибровка чувствительности</h2>
+    <p class="hint">Включите микрофон, помолчите и посмотрите на полоску: в тишине она должна быть ниже розовой линии. Когда птица кричит — заходить за неё и мигать «Звук!».</p>
+    <button id="calibBtn" class="btn">🎤 Включить микрофон для калибровки</button>
+    <div class="meter"><canvas id="meter" width="800" height="70"></canvas></div>
+    <div class="row"><span id="detCount" class="hint">Срабатываний: 0</span><span id="detFlash" class="flash">✦ Звук!</span></div>
+    <label class="slider">Чувствительность
+      <input type="range" id="onDb" min="6" max="24" step="1">
+      <span class="ends"><span>выше (ловит тихие)</span><span id="onDbVal"></span><span>ниже (только громкие)</span></span>
+    </label>
+  </div>
+
+  <div class="card">
+    <h2>Громкость</h2>
+    <label class="slider">Громкость <span id="volVal"></span>
+      <input type="range" id="volume" min="0" max="1" step="0.01">
+    </label>
+    <label class="slider">Верхний предел громкости <span id="maxVolVal"></span>
+      <input type="range" id="maxVolume" min="0.1" max="1" step="0.05">
+    </label>
+    <button id="testSound" class="btn">♪ Тестовый звук</button>
+  </div>
+
+  <div class="card">
+    <h2>Ответы</h2>
+    <label class="slider">Вероятность ответа на узнанный звук (эй, песня, позывной…) <span id="probKnownVal"></span>
+      <input type="range" id="probabilityKnown" min="0" max="1" step="0.05"></label>
+    <label class="slider">Вероятность ответа на остальные крики <span id="probVal"></span>
+      <input type="range" id="probability" min="0" max="1" step="0.05"></label>
+    <label class="slider">Задержка ответа после конца крика <span id="delayVal"></span>
+      <input type="range" id="delayS" min="0.15" max="1.5" step="0.05"></label>
+    <label class="slider">В тишине — звук не раньше чем через <span id="silMinVal"></span>
+      <input type="range" id="silenceMinS" min="3" max="60" step="1"></label>
+    <label class="slider">...и не позже чем через <span id="silMaxVal"></span>
+      <input type="range" id="silenceMaxS" min="5" max="120" step="1"></label>
+    <label class="slider">Не больше звуков программы в минуту <span id="limitVal"></span>
+      <input type="range" id="maxPerMinute" min="1" max="30" step="1"></label>
+    <label class="slider">Песня не чаще чем раз в <span id="songIntVal"></span>
+      <input type="range" id="songIntervalS" min="0" max="600" step="15">
+      <span class="ends"><span>0 — без ограничения</span><span></span><span>10 мин</span></span></label>
+    <p class="hint">Даже без ограничения программа не поёт сама себе: пока звучит её песня и ещё 0,15 с, она не слушает. Общий лимит звуков в минуту тоже действует.</p>
+    <label class="slider">Длительность сессии <span id="sessVal"></span>
+      <input type="range" id="sessionMinutes" min="5" max="30" step="1"></label>
+  </div>
+
+  <div class="card">
+    <h2>Услышал → чем отвечать</h2>
+    <p class="hint">Программа сравнивает услышанный звук с вашими подписанными клипами. Уверенно узнаёт песни Кима и Чи и «эй». «Заботу» узнаёт редко — она похожа на шорохи. Позывные и «посмотрите на меня» пока не узнаёт — мало подписанных примеров (нужно хотя бы 5–7 каждого).</p>
+    <h3>Крики</h3>
+    <div id="rulesCalls" class="rules"></div>
+    <h3>Песни</h3>
+    <div id="rulesSongs" class="rules"></div>
+  </div>
+
+  <div class="card">
+    <h2>Какие звуки и как часто</h2>
+    <p class="hint">Вес 0 — в автоответах не звучит. Чем больше вес, тем чаще. Кнопка ▶ запускает звук этой категории вручную — только во время сессии в режиме «Отвечать», с теми же лимитами.</p>
+    <h3>Крики</h3>
+    <div id="catCalls" class="cats"></div>
+    <h3>Песни</h3>
+    <div id="catSongs" class="cats"></div>
+    <button id="singBtn" class="btn big">🎶 Спеть</button>
+    <div id="manualMsg" class="hint">&nbsp;</div>
+  </div>
+
+  <div class="card">
+    <h2>Тестовый режим без птиц</h2>
+    <p class="hint">Вместо микрофона программа слушает аудиофайл (например, запись птиц). Удобно проверять детектор.</p>
+    <input type="file" id="testFile" accept="audio/*">
+    <label class="check"><input type="checkbox" id="monitorFile"> слышать файл через динамик</label>
+    <button id="clearTest" class="btn">Выключить тестовый режим</button>
+  </div>
+
+  <div class="card">
+    <button id="resetSettings" class="btn">Сбросить настройки</button>
+  </div>
+</section>
+
+<!-- ================= ИТОГИ ================= -->
+<section id="screen-summary" class="screen">
+  <header class="top"><h1><svg class="h-ico"><use href="#star"/></svg> Итоги сессии</h1></header>
+  <div class="card">
+    <div class="sum-birds" aria-hidden="true"><svg><use href="#finch"/></svg><svg class="flip"><use href="#finch"/></svg></div>
+    <div id="summary" class="kv big"></div>
+    <p class="honest">Это примерная оценка. Совпадения случаются сами по себе, а птицы перекликаются и друг с другом.
+      Сравнивайте с сессиями «Только слушать» — там ответы виртуальные, без звука.</p>
+    <p class="hint" id="sumAlt"></p>
+    <div class="row wrap">
+      <button id="sumShare" class="btn primary">☁︎ Сохранить журнал (CSV)</button>
+      <button class="btn" data-go="main">На главный экран</button>
+    </div>
+    <div id="sumSaveMsg" class="hint"></div>
+  </div>
+</section>
+
+<!-- ================= ИСТОРИЯ ================= -->
+<section id="screen-history" class="screen">
+  <header class="top">
+    <button class="link back" data-go="main">← Назад</button>
+    <h1><svg class="h-ico"><use href="#cloud"/></svg> История</h1>
+  </header>
+  <div class="card">
+    <div class="row wrap">
+      <button id="exportAll" class="btn">Журнал всех сессий (CSV)</button>
+      <button id="exportSummary" class="btn">Итоги всех сессий (CSV)</button>
+    </div>
+    <p class="hint">Хранилище iPad может очиститься само — сохраняйте CSV после сессий.</p>
+    <div id="storageWarn" class="warn" hidden></div>
+  </div>
+  <div id="historyList"></div>
+</section>
+
+</div>
+
+<!-- Кнопка «Стоп» — на всех экранах, пока идёт сессия -->
+<button id="stopBar" class="stopbar" hidden>■ СТОП</button>
+
+<!-- Модальное подтверждение -->
+<div id="modal" class="modal" hidden>
+  <div class="box">
+    <p id="modalText"></p>
+    <div class="row wrap">
+      <button id="modalYes" class="btn danger"></button>
+      <button id="modalNo" class="btn primary">Отмена</button>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="js/app.js?v=7"></script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+# Сырая запись и все нарезанные/отбракованные клипы — не публикуются
+data/raw/
+data/clips/
+data/backup/
+# Окружение
+.venv/
+__pycache__/
+.pytest_cache/
+.DS_Store
+node_modules/

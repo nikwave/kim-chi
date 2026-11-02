@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Проверка клипов</title>
+<style>
+  :root { --bg:#f6f5f2; --card:#fff; --ink:#1d1d1b; --muted:#77736b; --line:#e3e0d9; --accent:#2f6f4f; --del:#b3412e; --warn:#e8a33d; }
+  * { box-sizing:border-box; }
+  body { margin:0; font:15px/1.4 -apple-system, system-ui, sans-serif; background:var(--bg); color:var(--ink); }
+  header { position:sticky; top:0; z-index:5; background:var(--bg); border-bottom:1px solid var(--line); padding:10px 16px; display:flex; gap:12px; align-items:center; flex-wrap:wrap; }
+  header h1 { font-size:17px; margin:0 12px 0 0; }
+  .tab { border:1px solid var(--line); background:var(--card); padding:6px 14px; border-radius:20px; cursor:pointer; font:inherit; }
+  .tab.on { background:var(--ink); color:#fff; border-color:var(--ink); }
+  .grow { flex:1; }
+  .stat { color:var(--muted); }
+  button.act { font:inherit; padding:6px 12px; border-radius:8px; border:1px solid var(--line); background:var(--card); cursor:pointer; }
+  button.primary { background:var(--accent); color:#fff; border-color:var(--accent); }
+  button.big { background:var(--ink); color:#fff; border-color:var(--ink); }
+  button.danger { color:var(--del); }
+  main { padding:16px; max-width:1400px; margin:0 auto; }
+  .help { color:var(--muted); margin:0 0 14px; }
+  .group { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:12px; margin-bottom:14px; }
+  .group.dead { opacity:.5; }
+  .ghead { display:flex; gap:8px; align-items:center; margin-bottom:10px; flex-wrap:wrap; }
+  .ghead b { margin-right:6px; }
+  .clips { display:grid; grid-template-columns:repeat(auto-fill, minmax(150px, 1fr)); gap:8px; }
+  .clip { border:2px solid var(--line); border-radius:8px; overflow:hidden; position:relative; background:#111; }
+  .clip.ok { border-color:var(--accent); }
+  .clip img { width:100%; height:70px; display:block; object-fit:fill; cursor:pointer; }
+  .clip .meta { background:var(--card); font-size:12px; padding:3px 6px; display:flex; justify-content:space-between; align-items:center; gap:4px; }
+  .clip .x { border:0; background:none; cursor:pointer; color:var(--del); font-size:13px; padding:2px 4px; }
+  .clip.dead img { opacity:.25; }
+  .clip.dead .x { color:var(--accent); }
+  .clip.playing { outline:3px solid var(--warn); }
+  .badge { position:absolute; top:4px; left:4px; background:var(--accent); color:#fff; font-size:11px; padding:1px 6px; border-radius:6px; }
+  .note { background:#fffbe9; font-size:12px; padding:3px 6px; border-top:1px solid var(--line); color:#5a4a12; word-break:break-word; }
+  .note input { width:100%; font:inherit; border:1px solid var(--line); border-radius:4px; padding:2px 4px; }
+  .clip .pen { border:0; background:none; cursor:pointer; color:var(--muted); font-size:13px; padding:2px 4px; }
+  .tnote { width:min(900px,100%); display:flex; gap:10px; align-items:center; }
+  .tnote input { flex:1; font:inherit; font-size:16px; padding:10px 12px; border-radius:10px; border:1px solid #3a3934; background:#22211e; color:inherit; }
+  .tnote input:focus { outline:2px solid var(--warn); }
+  .tnote span { color:#a9a59b; font-size:14px; white-space:nowrap; }
+  details { margin-top:24px; }
+  details img.hist { max-width:100%; border:1px solid var(--line); border-radius:8px; background:#fff; }
+  #err { display:none; background:var(--del); color:#fff; padding:8px 16px; }
+
+  /* режим по одному */
+  #triage { display:none; position:fixed; inset:0; z-index:20; background:#151513; color:#f2f0ea; flex-direction:column; }
+  #triage.on { display:flex; }
+  .tbar { display:flex; align-items:center; gap:16px; padding:12px 20px; border-bottom:1px solid #2c2b28; flex-wrap:wrap; }
+  .tbar .grow { flex:1; }
+  .prog { height:6px; background:#2c2b28; }
+  .prog i { display:block; height:100%; background:#5fae84; width:0; transition:width .2s; }
+  .tbody { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:18px; padding:20px; }
+  .spec { width:min(900px, 100%); height:260px; border-radius:10px; overflow:hidden; background:#000; position:relative; }
+  .spec img { width:100%; height:100%; object-fit:fill; display:block; }
+  .spec .cursor { position:absolute; top:0; bottom:0; width:2px; background:var(--warn); left:0; }
+  .kind { font-size:28px; font-weight:600; }
+  .kind small { font-size:15px; color:#a9a59b; font-weight:400; margin-left:10px; }
+  .keys { display:flex; gap:12px; flex-wrap:wrap; justify-content:center; }
+  .key { min-width:150px; padding:14px 16px; border-radius:12px; border:1px solid #3a3934; background:#22211e; color:inherit; font:inherit; cursor:pointer; text-align:center; }
+  .key b { display:block; font-size:24px; }
+  .key.z b { color:#7fd3a3; } .key.x b { color:#f08a76; } .key.v b { color:#f2c46d; }
+  .flash { animation:fl .25s; }
+  @keyframes fl { from { background:#3a3934; } to { background:#22211e; } }
+  .tfoot { color:#a9a59b; text-align:center; padding:12px; font-size:14px; }
+  .done { font-size:22px; text-align:center; }
+</style>
+</head>
+<body>
+<div id="err">Не удалось сохранить решение. Проверьте, что prep/review.py запущен.</div>
+<header>
+  <h1>Проверка клипов</h1>
+  <button class="tab on" data-kind="call">Крики</button>
+  <button class="tab" data-kind="song">Песни</button>
+  <button class="tab" data-kind="rej" id="tabRej">Отброшенные</button>
+  <span class="stat" id="stat"></span>
+  <span class="grow"></span>
+  <button class="act big" id="startTriage">▶ По одному (Z / X / C / V)</button>
+  <button class="act" id="stop">■ Стоп звука</button>
+  <button class="act primary" id="export">Сохранить одобренные</button>
+</header>
+<main>
+  <p class="help">В приложение попадут <b>только одобренные</b> клипы (зелёная рамка) — те, что вы прослушали и оставили в режиме «По одному». Здесь можно быстро удалить мусорные группы целиком: «✕» удаляет клип, повторный клик возвращает. Сверху группы менее гармоничные — там чаще шум. Решения сохраняются сразу. «✎» — заметка к клипу (остаётся только у вас, в приложение не попадает). Во вкладке «Отброшенные» можно спасти клипы, которые автомат выбросил: Z/V там означает «вернуть в библиотеку».</p>
+  <div id="groups"></div>
+  <details>
+    <summary>Распределение длительностей и пороги</summary>
+    <p><img class="hist" src="durations.png" alt="Гистограммы длительностей"></p>
+  </details>
+</main>
+
+<section id="triage">
+  <div class="tbar">
+    <b id="tTitle"></b>
+    <span id="tCount"></span>
+    <span class="grow"></span>
+    <button class="act" id="tClose">Закрыть (Esc)</button>
+  </div>
+  <div class="prog"><i id="tProg"></i></div>
+  <div class="tbody" id="tBody"></div>
+  <div class="tfoot">N — заметка (Enter — сохранить) · Пробел — пауза · Backspace — вернуться к предыдущему и изменить решение · Esc — выйти (место сохраняется)</div>
+</section>
+
+<script>
+const NAMES = { call:"Крик", song:"Песня" };
+let INDEX = [], BYID = {}, kind = "call";
+let deleted = new Set(), approved = new Set(), kindOv = {}, notes = {};
+const REJ_ORDER = ["шум/щелчок", "тихий", "длинный неясный звук"];
+const rejRank = it => { const i = REJ_ORDER.indexOf(it.rejected); return i < 0 ? 9 : i; };
+const tabItems = k => k === "rej" ? INDEX.filter(i => i.rejected) : INDEX.filter(i => !i.rejected && i.kind === k);
+const escapeHtml = t => t.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const audio = new Audio();
+let queue = [], playingEl = null;
+
+const effKind = it => kindOv[it.id] || it.kind;
+const fmt = it => `${Math.round(it.dur*1000)} мс · ${Math.round(it.f0)} Гц`;
+
+/* ---------- звук ---------- */
+function play(list){ stop(); queue = list.slice(); next(); }
+function next(){
+  if (playingEl) playingEl.classList.remove("playing");
+  const it = queue.shift();
+  if (!it) { playingEl = null; return; }
+  playingEl = document.querySelector(`#groups [data-id="${it.id}"]`);
+  if (playingEl) { playingEl.classList.add("playing"); playingEl.scrollIntoView({block:"nearest"}); }
+  audio.src = it.file; audio.currentTime = 0;
+  audio.play().catch(()=>{});
+}
+audio.addEventListener("ended", () => { if (!T.on) setTimeout(next, 250); });
+function stop(){ queue = []; audio.pause(); if (playingEl) playingEl.classList.remove("playing"); playingEl = null; }
+
+/* ---------- сохранение ---------- */
+async function save(){
+  try {
+    const r = await fetch("/api/decisions", {method:"POST",
+      body: JSON.stringify({deleted:[...deleted], approved:[...approved], kind:kindOv, notes})});
+    if (!r.ok) throw 0;
+    document.getElementById("err").style.display = "none";
+  } catch { document.getElementById("err").style.display = "block"; }
+  stat();
+}
+function stat(){
+  const ok = INDEX.filter(i => !i.rejected);
+  const a = k => ok.filter(i => approved.has(i.id) && effKind(i) === k).length;
+  const undecided = ok.filter(i => !approved.has(i.id) && !deleted.has(i.id)).length;
+  const all = k => INDEX.filter(i => approved.has(i.id) && effKind(i) === k).length;
+  const rescued = INDEX.filter(i => i.rejected && approved.has(i.id)).length;
+  document.getElementById("stat").textContent =
+    `Одобрено: криков ${all("call")}, песен ${all("song")} (из них спасено из отброшенных ${rescued}) · не проверено ${undecided}`;
+}
+
+/* ---------- сетка ---------- */
+function tile(it){
+  const d = document.createElement("div");
+  d.className = "clip" + (deleted.has(it.id) ? " dead" : "") + (approved.has(it.id) ? " ok" : "");
+  d.dataset.id = it.id;
+  const moved = kindOv[it.id] ? `<span class="badge">→ ${NAMES[kindOv[it.id]].toLowerCase()}</span>` : "";
+  const isRej = !!it.rejected;
+  const xBtn = isRej
+    ? `<button class="x" title="Вернуть в библиотеку / убрать">${approved.has(it.id) ? "✕" : "＋"}</button>`
+    : `<button class="x" title="Удалить / вернуть">✕</button>`;
+  d.innerHTML = `${moved}<img src="png/${it.id}.png" alt=""><div class="meta"><span>${it.id} · ${fmt(it)}</span><span><button class="pen" title="Заметка">✎</button>${xBtn}</span></div>${notes[it.id] ? `<div class="note">${escapeHtml(notes[it.id])}</div>` : ""}`;
+  if (isRej && !approved.has(it.id)) d.querySelector(".x").style.color = "var(--accent)";
+  d.querySelector("img").onclick = () => play([it]);
+  d.querySelector(".x").onclick = () => {
+    if (isRej) {
+      if (approved.has(it.id)) { approved.delete(it.id); delete kindOv[it.id]; deleted.add(it.id); }
+      else { approved.add(it.id); deleted.delete(it.id); }
+    } else if (deleted.has(it.id)) deleted.delete(it.id);
+    else { deleted.add(it.id); approved.delete(it.id); delete kindOv[it.id]; }
+    render(); save();
+  };
+  d.querySelector(".pen").onclick = () => editNote(d, it);
+  return d;
+}
+
+function editNote(d, it){
+  let box = d.querySelector(".note");
+  if (!box) { box = document.createElement("div"); box.className = "note"; d.appendChild(box); }
+  box.innerHTML = `<input type="text" placeholder="Заметка, Enter — сохранить">`;
+  const inp = box.querySelector("input");
+  inp.value = notes[it.id] || "";
+  inp.focus();
+  const commit = () => { setNote(it.id, inp.value); render(); };
+  inp.onkeydown = e => { if (e.key === "Enter") inp.blur(); if (e.key === "Escape") { inp.value = notes[it.id] || ""; inp.blur(); } };
+  inp.onblur = commit;
+}
+function setNote(id, text){
+  text = (text || "").trim();
+  if ((notes[id] || "") === text) return;
+  if (text) notes[id] = text; else delete notes[id];
+  save();
+}
+
+function render(){
+  const root = document.getElementById("groups");
+  root.innerHTML = "";
+  let sections;
+  if (kind === "rej") {
+    const by = {};
+    tabItems("rej").forEach(i => (by[i.rejected] ||= []).push(i));
+    sections = Object.keys(by).sort((a,b) => REJ_ORDER.indexOf(a) - REJ_ORDER.indexOf(b))
+      .map(r => [`Отброшено: ${r}`, by[r]]);
+  } else {
+    const groups = {};
+    tabItems(kind).forEach(i => (groups[i.group] ||= []).push(i));
+    const keys = Object.keys(groups).map(Number).sort((a,b)=>a-b);
+    const movedIn = INDEX.filter(i => !i.rejected && i.kind !== kind && kindOv[i.id] === kind);
+    sections = keys.map(g => [`Группа ${g}`, groups[g]]);
+    if (movedIn.length) sections.push([`Перенесены из раздела «${kind === "call" ? "Песни" : "Крики"}»`, movedIn]);
+  }
+  for (const [title, list] of sections) {
+    const isRej = kind === "rej";
+    const alive = list.filter(i => isRej ? approved.has(i.id) : !deleted.has(i.id));
+    const box = document.createElement("section");
+    box.className = "group" + (alive.length || isRej ? "" : " dead");
+    box.innerHTML = `<div class="ghead"><b>${title}</b><span class="stat">${isRej ? "спасено" : "осталось"} ${alive.length} из ${list.length}</span>
+      <button class="act">▶ Прослушать группу</button>
+      ${isRej ? "" : `<button class="act danger">${alive.length ? "Удалить группу" : "Вернуть группу"}</button>`}</div><div class="clips"></div>`;
+    const [bPlay, bDel] = box.querySelectorAll("button");
+    bPlay.onclick = () => play(isRej || !alive.length ? list : alive);
+    if (bDel)
+    bDel.onclick = () => {
+      if (alive.length) list.forEach(i => { deleted.add(i.id); approved.delete(i.id); delete kindOv[i.id]; });
+      else list.forEach(i => deleted.delete(i.id));
+      render(); save();
+    };
+    const grid = box.querySelector(".clips");
+    list.forEach(i => grid.appendChild(tile(i)));
+    root.appendChild(box);
+  }
+  stat();
+}
+
+/* ---------- режим по одному ---------- */
+const T = { on:false, order:[], pos:0, history:[], paused:false };
+
+function triageOrder(){
+  const items = tabItems(kind);
+  return kind === "rej"
+    ? items.sort((a,b) => rejRank(a) - rejRank(b) || a.id.localeCompare(b.id))
+    : items.sort((a,b) => a.group - b.group || a.id.localeCompare(b.id));
+}
+const undecided = it => !approved.has(it.id) && !deleted.has(it.id);
+
+function openTriage(){
+  stop();
+  T.on = true; T.paused = false; T.history = [];
+  T.order = triageOrder();
+  T.pos = T.order.findIndex(undecided);
+  document.getElementById("triage").classList.add("on");
+  showCurrent(true);
+}
+function closeTriage(){
+  T.on = false; audio.pause();
+  document.getElementById("triage").classList.remove("on");
+  render();
+}
+function current(){ return T.pos >= 0 && T.pos < T.order.length ? T.order[T.pos] : null; }
+
+function showCurrent(autoplay){
+  const total = T.order.length;
+  const done = T.order.filter(i => !undecided(i)).length;
+  document.getElementById("tTitle").textContent = `Раздел «${{call:"Крики", song:"Песни", rej:"Отброшенные"}[kind]}»`;
+  document.getElementById("tCount").textContent = `проверено ${done} из ${total}`;
+  document.getElementById("tProg").style.width = (100 * done / Math.max(total,1)) + "%";
+  const body = document.getElementById("tBody");
+  const it = current();
+  if (!it) {
+    audio.pause();
+    body.innerHTML = `<div class="done">Раздел пройден целиком.<br><br>Нажмите «Сохранить одобренные» или перейдите в другой раздел.</div>
+      <div class="keys"><button class="key" id="tBack"><b>⌫</b>вернуться к последнему</button></div>`;
+    body.querySelector("#tBack").onclick = back;
+    return;
+  }
+  const other = it.kind === "call" ? "песня" : "крик";
+  const rej = !!it.rejected;
+  const where = rej ? `отброшен: ${it.rejected}` : `группа ${it.group}`;
+  body.innerHTML = `
+    <div class="kind">${NAMES[effKind(it)]}<small>${it.id} · ${where} · ${fmt(it)}</small></div>
+    <div class="spec"><img src="png/${it.id}.png" alt=""><div class="cursor" id="tCur"></div></div>
+    <div class="keys">
+      <button class="key z" data-k="z"><b>Z</b>${rej ? "вернуть в библиотеку" : "оставить"}</button>
+      <button class="key x" data-k="x"><b>X</b>${rej ? "не нужен" : "удалить"}</button>
+      <button class="key" data-k="c"><b>C</b>ещё раз</button>
+      <button class="key v" data-k="v"><b>V</b>${rej ? "вернуть" : "оставить"}, но это ${other}</button>
+    </div>
+    <div class="tnote"><span>N — заметка</span><input id="tNote" type="text" placeholder="Например: тревожный? / Ким у колонки / красивая песня"></div>`;
+  body.querySelectorAll(".key").forEach(b => b.onclick = () => act(b.dataset.k));
+  const inp = body.querySelector("#tNote");
+  inp.value = notes[it.id] || "";
+  inp.onkeydown = e => {
+    e.stopPropagation();
+    if (e.key === "Enter" || e.key === "Escape") { if (e.key === "Escape") inp.value = notes[it.id] || ""; inp.blur(); }
+  };
+  inp.onblur = () => setNote(it.id, inp.value);
+  if (autoplay && !T.paused) playCurrent();
+}
+function playCurrent(){
+  const it = current(); if (!it) return;
+  audio.src = it.file; audio.currentTime = 0;
+  audio.play().catch(()=>{});
+}
+audio.addEventListener("timeupdate", () => {
+  const c = document.getElementById("tCur");
+  if (T.on && c && audio.duration) c.style.left = (100 * audio.currentTime / audio.duration) + "%";
+});
+
+function snapshot(id){ return { id, del:deleted.has(id), ok:approved.has(id), kind:kindOv[id] }; }
+const activeInput = () => document.activeElement && document.activeElement.tagName === "INPUT";
+function restore(s){
+  s.del ? deleted.add(s.id) : deleted.delete(s.id);
+  s.ok ? approved.add(s.id) : approved.delete(s.id);
+  if (s.kind) kindOv[s.id] = s.kind; else delete kindOv[s.id];
+}
+function advance(){
+  let p = T.pos + 1;
+  while (p < T.order.length && !undecided(T.order[p])) p++;
+  T.pos = p < T.order.length ? p : -1;
+  showCurrent(true);
+}
+function act(k){
+  const it = current();
+  const btn = document.querySelector(`.key[data-k="${k}"]`);
+  if (btn) { btn.classList.remove("flash"); void btn.offsetWidth; btn.classList.add("flash"); }
+  if (!it) return;
+  if (k === "c") { T.paused = false; playCurrent(); return; }
+  T.history.push({ snap: snapshot(it.id), pos: T.pos });
+  if (k === "z") { approved.add(it.id); deleted.delete(it.id); delete kindOv[it.id]; }
+  if (k === "x") { deleted.add(it.id); approved.delete(it.id); delete kindOv[it.id]; }
+  if (k === "v") { approved.add(it.id); deleted.delete(it.id); kindOv[it.id] = it.kind === "call" ? "song" : "call"; }
+  save();
+  advance();
+}
+function back(){
+  const h = T.history.pop();
+  if (!h) return;
+  restore(h.snap); save();
+  T.pos = h.pos;
+  showCurrent(true);
+}
+
+document.addEventListener("keydown", e => {
+  if (activeInput()) return;   // печатается заметка — горячие клавиши не работают
+  if (!T.on) { if (e.key === "Escape") stop(); return; }
+  const map = { KeyZ:"z", KeyX:"x", KeyC:"c", KeyV:"v" };   // по коду клавиши — работает и в русской раскладке
+  if (map[e.code]) { e.preventDefault(); if (!e.repeat) act(map[e.code]); }
+  else if (e.code === "KeyN") { e.preventDefault(); const i = document.getElementById("tNote"); if (i) i.focus(); }
+  else if (e.code === "Space") { e.preventDefault(); T.paused = !T.paused; T.paused ? audio.pause() : playCurrent(); }
+  else if (e.code === "Backspace") { e.preventDefault(); back(); }
+  else if (e.code === "Escape") { e.preventDefault(); closeTriage(); }
+});
+
+/* ---------- прочее ---------- */
+document.querySelectorAll(".tab").forEach(b => b.onclick = () => {
+  document.querySelectorAll(".tab").forEach(x => x.classList.toggle("on", x===b));
+  kind = b.dataset.kind; stop(); render(); window.scrollTo(0,0);
+});
+document.getElementById("stop").onclick = stop;
+document.getElementById("startTriage").onclick = openTriage;
+document.getElementById("tClose").onclick = closeTriage;
+document.getElementById("export").onclick = async () => {
+  if (!approved.size) { alert("Пока нет одобренных клипов. Пройдите режим «По одному»."); return; }
+  const r = await (await fetch("/api/export", {method:"POST"})).json();
+  alert(`Сохранено в app/: криков ${r.calls}, песен ${r.songs}.`);
+};
+
+(async () => {
+  const st = await (await fetch("/api/state")).json();
+  INDEX = st.index; INDEX.forEach(i => BYID[i.id] = i);
+  deleted = new Set(st.decisions.deleted || []);
+  approved = new Set(st.decisions.approved || []);
+  kindOv = st.decisions.kind || {};
+  notes = st.decisions.notes || {};
+  document.getElementById("tabRej").textContent = `Отброшенные (${INDEX.filter(i => i.rejected).length})`;
+  render();
+})();
+</script>
+</body>
+</html>
