@@ -26,7 +26,9 @@ npm test                              # все тесты
 Сайт — ветка `gh-pages` (содержимое `app/`), GitHub Pages отдаёт её как есть.
 Обновить сайт после изменений: закоммитить в `main`, затем
 ```
-git subtree push --prefix app origin gh-pages
+git push origin main
+git push origin "$(git subtree split --prefix app main):refs/heads/gh-pages"
 ```
+Через 1–2 минуты сайт обновится: https://nikwave.github.io/kim-chi/
 
 Повторная нарезка (`slice.py`) пересоздаёт `data/clips/` — решения проверки привязаны к id клипов и потеряют смысл.
