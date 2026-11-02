@@ -9,7 +9,7 @@ export class AudioEngine {
     this.compressed = new Map();   // id → ArrayBuffer (скачано)
     this.decoded = new Map();      // id → AudioBuffer (для текущего ctx)
     this.sources = new Set();
-    this.volume = 0.25;
+    this.volume = 1;               // всегда полная громкость файла; громкость — кнопками iPad
     this.onDetector = null;        // обработчик сообщений детектора
     this.onInterrupt = null;       // (причина) => void
     this.micInfo = null;
@@ -112,7 +112,7 @@ export class AudioEngine {
   /* ---------- вход ---------- */
   async startInput({ file = null, monitorFile = false, onDb = 12 } = {}) {
     await this.ensureContext(file ? "playback" : "play-and-record");
-    if (!this.workletReady) this.workletReady = this.ctx.audioWorklet.addModule("js/detector-worklet.js?v=7");
+    if (!this.workletReady) this.workletReady = this.ctx.audioWorklet.addModule("js/detector-worklet.js?v=8");
     await this.workletReady;
 
     this.node = new AudioWorkletNode(this.ctx, "bird-detector", {

@@ -1,8 +1,8 @@
-import { AudioEngine } from "./audio.js?v=7";
-import { computeFeatures } from "./features.js?v=7";
-import { Session, DEFAULT_SETTINGS, computeMetrics, pickFromCategory, ruleFor, UNLABELED, SIMILAR, NONE, BY_WEIGHT, NOISE } from "./logic.js?v=7";
-import { saveSession, listSessions, storageError } from "./storage.js?v=7";
-import { sessionsToCsv, summaryCsv, shareOrDownload } from "./csv.js?v=7";
+import { AudioEngine } from "./audio.js?v=8";
+import { computeFeatures } from "./features.js?v=8";
+import { Session, DEFAULT_SETTINGS, computeMetrics, pickFromCategory, ruleFor, UNLABELED, SIMILAR, NONE, BY_WEIGHT, NOISE } from "./logic.js?v=8";
+import { saveSession, listSessions, storageError } from "./storage.js?v=8";
+import { sessionsToCsv, summaryCsv, shareOrDownload } from "./csv.js?v=8";
 
 const $ = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
@@ -32,7 +32,6 @@ function loadSettings() {
   s.version = SETTINGS_VERSION;
   const out = { ...DEFAULT_SETTINGS, ...s,
     weights: { calls: {}, songs: {}, ...(s.weights || {}) }, rules: { calls: {}, songs: {}, ...(s.rules || {}) } };
-  out.volume = Math.min(out.volume, out.maxVolume);
   return out;
 }
 function saveSettings() {
@@ -141,7 +140,6 @@ async function startSession() {
   await stopCalibration();
   $("#startBtn").disabled = true;
   try {
-    engine.volume = Math.min(settings.volume, settings.maxVolume);
     engine.onInterrupt = reason => stopSession(reason);
     engine.onDetector = onDetector;
     const info = await engine.startInput({ file: testFile, monitorFile: $("#monitorFile").checked, onDb: settings.onDb });
@@ -411,12 +409,12 @@ window.addEventListener("pagehide", () => { if (run) stopSession("страниц
 
 /* ---------------- настройка ---------------- */
 const SLIDERS = {
-  onDb: v => `${v} дБ`, volume: v => `${Math.round(v * 100)}%`, maxVolume: v => `${Math.round(v * 100)}%`,
+  onDb: v => `${v} дБ`,
   probability: v => `${Math.round(v * 100)}%`, probabilityKnown: v => `${Math.round(v * 100)}%`,
   silenceMinS: v => `${v} с`, silenceMaxS: v => `${v} с`, delayS: v => `${Math.round(v * 1000)} мс`,
   maxPerMinute: v => `${v}`, songIntervalS: v => fmtInterval(+v), sessionMinutes: v => `${v} мин`,
 };
-const VAL_ID = { onDb: "onDbVal", volume: "volVal", maxVolume: "maxVolVal", probability: "probVal", delayS: "delayVal",
+const VAL_ID = { onDb: "onDbVal", probability: "probVal", delayS: "delayVal",
   probabilityKnown: "probKnownVal", silenceMinS: "silMinVal", silenceMaxS: "silMaxVal",
   maxPerMinute: "limitVal", songIntervalS: "songIntVal", sessionMinutes: "sessVal" };
 
@@ -424,10 +422,7 @@ for (const key of Object.keys(SLIDERS)) {
   const el = $("#" + key);
   el.addEventListener("input", () => {
     let v = +el.value;
-    if (key === "volume") v = Math.min(v, settings.maxVolume);
-    if (key === "maxVolume") { settings.volume = Math.min(settings.volume, v); engine.setVolume(settings.volume); }
     settings[key] = v;
-    if (key === "volume") { el.value = v; engine.setVolume(v); }
     if (key === "onDb") engine.detector({ type: "config", cfg: { onDb: v } });
     if (key === "silenceMinS" && settings.silenceMaxS < v) settings.silenceMaxS = v;
     if (key === "silenceMaxS" && settings.silenceMinS > v) settings.silenceMinS = v;
@@ -443,7 +438,6 @@ function renderSettingsValues() {
     $("#" + key).value = settings[key];
     $("#" + VAL_ID[key]).textContent = f(settings[key]);
   }
-  $("#volume").max = settings.maxVolume;
   $("#songsToggle").checked = settings.songsEnabled;
   $("#silenceToggle").checked = settings.silenceEnabled;
 }
@@ -538,7 +532,6 @@ $("#testSound").addEventListener("click", async () => {
   if (!LIB) return;
   const clip = pickFromCategory(LIB.calls, LIB.categories.calls.find(c => c.weight > 0)?.name || LIB.calls[0].cat, null);
   try {
-    engine.volume = Math.min(settings.volume, settings.maxVolume);
     await engine.testSound(clip);
   } catch (e) { $("#manualMsg").textContent = `Тестовый звук не сыграл: ${e.message || e}`; }
 });
@@ -557,7 +550,6 @@ $("#resetSettings").addEventListener("click", async () => {
   if (!(await confirmModal("Вернуть все настройки к исходным?", "Сбросить"))) return;
   settings = { ...DEFAULT_SETTINGS, version: SETTINGS_VERSION, weights: { calls: {}, songs: {} }, rules: { calls: {}, songs: {} } };
   saveSettings();
-  engine.setVolume(settings.volume);
   renderSettings();
 });
 
