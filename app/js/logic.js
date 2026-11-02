@@ -39,8 +39,6 @@ export const DEFAULT_SETTINGS = {
   classifyK: 7,            // распознавание: соседей
   classifyMinVotes: 2,     // ...и сколько из них должны быть одной подписанной категории
   replyWindowS: 1.0,       // окно отклика птиц для метрики
-  volume: 0.25,
-  maxVolume: 0.6,
   onDb: 12,
   weights: { calls: {}, songs: {} },  // вес категорий: имя → 0..5
   rules: { calls: {}, songs: {} },    // услышанная категория → чем отвечать (поверх DEFAULT_RULES)
