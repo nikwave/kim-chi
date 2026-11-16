@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<meta name="apple-mobile-web-app-title" content="Ким и Чи для меня">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" href="icon-512.png">
+<meta name="theme-color" content="#efe3ff">
+<title>Ким и Чи ♡ для меня</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap">
+<link rel="stylesheet" href="css/app.css?v=9">
+<link rel="stylesheet" href="css/calm.css?v=1">
+</head>
+<body class="calm-page">
+
+<!-- Рисунки те же, что в index.html -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="finch" viewBox="0 0 130 110">
+      <!-- хвост в чёрно-белую полоску -->
+      <g transform="rotate(-18 30 62)">
+        <rect x="2" y="54" width="34" height="16" rx="8" fill="#2b2b33"/>
+        <rect x="8" y="54" width="5" height="16" fill="#fff"/>
+        <rect x="19" y="54" width="5" height="16" fill="#fff"/>
+      </g>
+      <!-- тело -->
+      <ellipse cx="62" cy="66" rx="38" ry="32" fill="#a7a9b8"/>
+      <ellipse cx="70" cy="78" rx="28" ry="20" fill="#fff6ef"/>
+      <!-- каштановый бок в белых точках -->
+      <ellipse cx="50" cy="72" rx="19" ry="13" fill="#d8834a"/>
+      <circle cx="42" cy="68" r="2.6" fill="#fff"/><circle cx="51" cy="66" r="2.6" fill="#fff"/>
+      <circle cx="59" cy="70" r="2.6" fill="#fff"/><circle cx="46" cy="76" r="2.6" fill="#fff"/>
+      <circle cx="55" cy="78" r="2.6" fill="#fff"/>
+      <!-- крыло -->
+      <path d="M38 56 Q60 44 76 60 Q60 66 38 56Z" fill="#8e90a2"/>
+      <!-- полосатое горлышко -->
+      <g stroke="#2b2b33" stroke-width="2.6" stroke-linecap="round">
+        <path d="M90 58 q5 2 10 0"/><path d="M89 63 q6 2 11 0"/><path d="M89 68 q5 2 9 0"/>
+      </g>
+      <!-- голова -->
+      <circle cx="90" cy="40" r="25" fill="#b1b3c2"/>
+      <!-- рыжая щёчка -->
+      <ellipse cx="96" cy="50" rx="10" ry="8" fill="#ff9b45"/>
+      <!-- «слёзка» под глазом -->
+      <path d="M85 44 L84.2 50" stroke="#fff" stroke-width="4.2" stroke-linecap="round"/>
+      <path d="M85 44 L84.2 50" stroke="#2b2b33" stroke-width="2.2" stroke-linecap="round"/>
+      <!-- глаз -->
+      <circle cx="92" cy="35" r="6.5" fill="#1f1b2e"/>
+      <circle cx="94.4" cy="32.6" r="2.4" fill="#fff"/>
+      <circle cx="90" cy="37.5" r="1.1" fill="#fff"/>
+      <!-- румянец -->
+      <ellipse cx="102" cy="44" rx="4.5" ry="3" fill="#ff9fc4" opacity=".75"/>
+      <!-- клюв -->
+      <path d="M111 33 Q126 39 112 48 Q108 41 111 33Z" fill="#ff5b4a"/>
+      <!-- лапки -->
+      <g stroke="#ff8a5b" stroke-width="3.2" stroke-linecap="round" fill="none">
+        <path d="M58 96 l-2 9 M56 105 l-5 2 M56 105 l3 3"/>
+        <path d="M74 96 l1 9 M75 105 l-4 2 M75 105 l4 2"/>
+      </g>
+    </symbol>
+    <symbol id="star" viewBox="0 0 24 24">
+      <path d="M12 1.8l2.9 6.3 6.9.7-5.2 4.6 1.5 6.8L12 16.7l-6.1 3.5 1.5-6.8L2.2 8.8l6.9-.7z" fill="currentColor"
+        stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/>
+    </symbol>
+    <symbol id="cloud" viewBox="0 0 120 60">
+      <path d="M22 54h76a20 20 0 0 0 2-40 26 26 0 0 0-48-6 18 18 0 0 0-28 12A17 17 0 0 0 22 54z" fill="currentColor"/>
+    </symbol>
+    <symbol id="heart" viewBox="0 0 24 24">
+      <path d="M12 21s-8-5.2-8-11a4.6 4.6 0 0 1 8-3 4.6 4.6 0 0 1 8 3c0 5.8-8 11-8 11z" fill="currentColor"/>
+    </symbol>
+    <symbol id="note" viewBox="0 0 24 24">
+      <path d="M9 18a3 3 0 1 1-2-2.8V4l11-2v12a3 3 0 1 1-2-2.8V6.2L9 7.6z" fill="currentColor"/>
+    </symbol>
+  </defs>
+</svg>
+
+<!-- Вечернее небо: проявляется, пока играет звук -->
+<div class="night" aria-hidden="true"></div>
+
+<!-- Небо -->
+<div class="sky" aria-hidden="true">
+  <svg class="cloud c1"><use href="#cloud"/></svg>
+  <svg class="cloud c2"><use href="#cloud"/></svg>
+  <svg class="cloud c3"><use href="#cloud"/></svg>
+  <svg class="cloud c4"><use href="#cloud"/></svg>
+  <svg class="twinkle s1"><use href="#star"/></svg>
+  <svg class="twinkle s2"><use href="#star"/></svg>
+  <svg class="twinkle s3"><use href="#star"/></svg>
+  <svg class="twinkle s4"><use href="#star"/></svg>
+  <svg class="twinkle s5"><use href="#star"/></svg>
+  <svg class="twinkle s6"><use href="#star"/></svg>
+  <svg class="twinkle s7"><use href="#star"/></svg>
+  <svg class="twinkle s8"><use href="#star"/></svg>
+</div>
+
+<div id="app">
+<section class="screen on">
+  <header class="calm-top">
+    <h1><span class="logo-star"><svg><use href="#star"/></svg></span> Ким и Чи <svg class="h-ico"><use href="#heart"/></svg></h1>
+    <p>тихо чирикают рядом с вами</p>
+  </header>
+
+  <div class="scene" aria-hidden="true">
+    <svg class="branch" viewBox="0 0 600 60" preserveAspectRatio="none">
+      <path d="M0 40 Q150 20 300 34 T600 28" stroke="#b98fd8" stroke-width="10" fill="none" stroke-linecap="round"/>
+      <circle cx="120" cy="30" r="9" fill="#ffc6e0"/><circle cx="470" cy="26" r="9" fill="#ffc6e0"/>
+      <circle cx="300" cy="32" r="7" fill="#fff"/>
+    </svg>
+    <div class="bird kim"><svg><use href="#finch"/></svg><span class="tag">Ким</span></div>
+    <div class="bird chi"><svg><use href="#finch"/></svg><span class="tag">Чи</span></div>
+    <div class="notes-fly"><svg><use href="#note"/></svg><svg><use href="#note"/></svg><svg><use href="#note"/></svg></div>
+    <svg class="mini-heart"><use href="#heart"/></svg>
+  </div>
+
+  <div id="loadBanner" class="banner"></div>
+
+  <div class="player">
+    <div class="halo" aria-hidden="true"><i></i><i></i><i></i></div>
+    <svg class="ring" viewBox="0 0 168 168" aria-hidden="true"><circle class="ring-bg" cx="84" cy="84" r="80"/><circle class="ring-fg" id="ringFg" cx="84" cy="84" r="80"/></svg>
+    <button id="playBtn" class="play" disabled aria-label="Играть">
+      <svg class="ic-play" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.5 5.2v13.6c0 .8.9 1.3 1.6.9l10.3-6.8c.6-.4.6-1.4 0-1.8L10.1 4.3c-.7-.4-1.6.1-1.6.9z"/></svg>
+      <svg class="ic-pause" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="4.5" width="4.2" height="15" rx="1.6"/><rect x="13.8" y="4.5" width="4.2" height="15" rx="1.6"/></svg>
+    </button>
+    <div class="play-label" id="playLabel">Играть</div>
+    <div class="calm-status" id="status">Загружаю звуки…</div>
+  </div>
+
+  <div class="panel">
+    <div class="item">
+      <div class="item-head"><span class="item-title">Громкость</span><span id="volumeVal"></span></div>
+      <div class="vol">
+        <svg class="spk" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5v5h3.5l4.5 4v-13l-4.5 4z"/></svg>
+        <input type="range" id="volume" min="0" max="100" step="1" aria-label="Громкость">
+        <svg class="spk big" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9.5v5h3.5l4.5 4v-13l-4.5 4z"/><path d="M15 8.5a5 5 0 0 1 0 7M17.6 5.8a9 9 0 0 1 0 12.4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="item-head"><span class="item-title">Как часто чирикают</span></div>
+      <div class="seg" id="freq">
+        <button data-freq="rare">реже</button>
+        <button data-freq="normal">обычно</button>
+        <button data-freq="lively">чаще</button>
+      </div>
+    </div>
+
+    <div class="item">
+      <div class="item-head"><span class="item-title">Таймер сна</span><span id="sleepLeft"></span></div>
+      <div class="seg five" id="sleep">
+        <button data-sleep="0">выкл</button>
+        <button data-sleep="15">15 мин</button>
+        <button data-sleep="30">30 мин</button>
+        <button data-sleep="60">1 час</button>
+        <button data-sleep="90">1,5 ч</button>
+      </div>
+      <div class="hint" id="sleepHint">Звук плавно затихнет и остановится сам.</div>
+    </div>
+
+    <div class="item">
+      <div class="item-head"><span class="item-title">Вид</span></div>
+      <div class="seg" id="theme">
+        <button data-theme="day">☀︎ день</button>
+        <button data-theme="evening">☾ вечер</button>
+        <button data-theme="night">✦ ночь</button>
+      </div>
+      <div class="hint" id="themeHint"></div>
+    </div>
+
+    <div class="item row toggle-card">
+      <div class="grow">
+        <div class="item-title">Не гасить экран</div>
+        <div class="hint" id="wakeHint">Если телефон лежит экраном вверх: пока экран горит, звук не прервётся.</div>
+      </div>
+      <label class="switch"><input type="checkbox" id="wakeToggle"><span></span></label>
+    </div>
+  </div>
+</section>
+</div>
+
+<script type="module" src="js/calm.js?v=1"></script>
+</body>
+</html>
