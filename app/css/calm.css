@@ -1,0 +1,145 @@
+/* Страница «для меня»: тихая, воздушная, вечерняя. Основа — app.css, здесь только отличия. */
+.calm-page {
+  --glass: rgba(255, 255, 255, .6); --glass-line: rgba(255, 255, 255, .95);
+  padding-bottom: 48px; transition: color 2s ease;
+}
+.calm-page #app { max-width: 520px; padding-top: max(22px, env(safe-area-inset-top)); }
+
+/* ---------- вечернее небо: проявляется, пока звучит ---------- */
+.night {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: 0; transition: opacity 4s ease;
+  background:
+    radial-gradient(90% 60% at 80% 0%, rgba(255, 214, 160, .16), transparent 60%),
+    radial-gradient(120% 80% at 50% 0%, #4d3b94 0%, #2b2361 48%, #17123f 100%);
+}
+.calm-page.dusk .night { opacity: 1; }
+.calm-page.dusk {
+  --ink: #f4edff; --muted: #bba9e8; --violet-d: #d3beff; --line: rgba(255, 255, 255, .14);
+  --glass: rgba(255, 255, 255, .075); --glass-line: rgba(255, 255, 255, .16);
+}
+.sky .cloud { transition: opacity 4s ease; }
+.calm-page.dusk .sky .cloud { opacity: .1; }
+.calm-page.dusk .sky .twinkle { filter: drop-shadow(0 0 5px rgba(255, 236, 170, .9)); }
+
+/* ---------- заголовок ---------- */
+.calm-top { text-align: center; margin: 4px 0 6px; }
+.calm-top h1 { justify-content: center; font-size: 30px; }
+.calm-top p { margin: 2px 0 0; font-size: 16px; color: var(--muted); transition: color 2s ease; }
+
+/* ---------- сцена: птицы покрупнее, луна ---------- */
+.calm-page .scene { height: 200px; margin-bottom: 4px; }
+.calm-page .scene::before {            /* мягкое сияние за птицами */
+  content: ""; position: absolute; left: 50%; top: 4%; width: 78%; height: 90%; transform: translateX(-50%);
+  background: radial-gradient(closest-side, rgba(255, 255, 255, .75), transparent);
+  opacity: .8; transition: opacity 4s ease, background 4s ease; pointer-events: none;
+}
+.calm-page.dusk .scene::before { background: radial-gradient(closest-side, rgba(150, 120, 255, .38), transparent); opacity: 1; }
+.calm-page .bird { width: clamp(104px, 30vw, 150px); height: clamp(88px, 25vw, 127px); bottom: 44px; }
+.calm-page .bird.kim { left: 10%; } .calm-page .bird.chi { right: 10%; }
+.calm-page .bird .tag { transition: background 2s ease, color 2s ease; }
+.calm-page.dusk .bird .tag { background: rgba(255, 255, 255, .13); color: #eadfff; box-shadow: none; }
+.calm-page .bird svg { transition: filter .5s ease; }
+/* птица чирикнула — тёплое золотое свечение */
+.calm-page.bird-heard .bird.kim svg,
+.calm-page.prog-singing .bird.chi svg { filter: drop-shadow(0 0 16px rgba(255, 214, 102, .85)) drop-shadow(0 6px 6px rgba(90, 50, 160, .18)); }
+.calm-page .scene::after {             /* луна: появляется вместе с вечером */
+  content: ""; position: absolute; top: 2px; right: 14%; width: 38px; height: 38px; border-radius: 50%;
+  box-shadow: inset -11px -5px 0 0 #fff2c9, 0 0 22px 2px rgba(255, 238, 180, .45);
+  opacity: 0; transform: rotate(-18deg); transition: opacity 4s ease; pointer-events: none;
+}
+.calm-page.dusk .scene::after { opacity: 1; }
+.calm-page .mini-heart { top: 22px; }
+.calm-page .branch path { transition: stroke 3s ease; }
+.calm-page.dusk .branch path { stroke: #7d63c4; }
+
+/* ---------- кнопка «Играть» с кругами дыхания ---------- */
+.player { position: relative; display: flex; flex-direction: column; align-items: center; margin: 10px 0 26px; }
+.play {
+  position: relative; z-index: 2; width: 138px; height: 138px; border-radius: 50%; padding: 0;
+  display: grid; place-items: center; cursor: pointer; color: #fff;
+  border: 4px solid rgba(255, 255, 255, .92);
+  background: linear-gradient(145deg, #b891ff 0%, #ff8fc6 100%);
+  box-shadow: 0 16px 36px rgba(155, 108, 255, .45), inset 0 -9px 0 rgba(0, 0, 0, .07), inset 0 6px 0 rgba(255, 255, 255, .25);
+  transition: transform .2s ease, box-shadow 1s ease;
+}
+.play:active { transform: scale(.95); }
+.play:disabled { opacity: .5; cursor: default; }
+.play svg { width: 58px; height: 58px; fill: #fff; filter: drop-shadow(0 3px 0 rgba(90, 40, 160, .28)); }
+.play .ic-play { margin-left: 6px; }
+.play .ic-pause { display: none; }
+.play.playing .ic-play { display: none; }
+.play.playing .ic-pause { display: block; }
+.play.playing { background: linear-gradient(145deg, #7fd6b5 0%, #9b6cff 100%); box-shadow: 0 16px 40px rgba(127, 214, 181, .35), inset 0 -9px 0 rgba(0, 0, 0, .07), inset 0 6px 0 rgba(255, 255, 255, .25); }
+
+.halo { position: absolute; top: 0; left: 50%; width: 138px; height: 138px; margin-left: -69px; z-index: 1; pointer-events: none; }
+.halo i { position: absolute; inset: 0; border-radius: 50%; border: 2px solid rgba(255, 255, 255, .8); opacity: 0; }
+.calm-page.playing .halo i { animation: breathe 7.5s ease-out infinite; }
+.halo i:nth-child(2) { animation-delay: 2.5s; }
+.halo i:nth-child(3) { animation-delay: 5s; }
+@keyframes breathe { 0% { transform: scale(1); opacity: .65; } 100% { transform: scale(2.5); opacity: 0; } }
+
+.play-label { margin-top: 16px; font-size: 24px; font-weight: 900; color: var(--violet-d); transition: color 2s ease; }
+.calm-status { margin-top: 2px; font-size: 17px; color: var(--muted); min-height: 1.5em; text-align: center; transition: color 2s ease; }
+.calm-page .banner { text-align: center; }
+
+/* ---------- стеклянная панель настроек ---------- */
+.panel {
+  background: var(--glass); border: 2px solid var(--glass-line); border-radius: 32px; padding: 6px 22px;
+  -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
+  box-shadow: 0 14px 40px rgba(122, 75, 230, .13);
+  transition: background 3s ease, border-color 3s ease;
+}
+.panel .item { padding: 18px 0; }
+.panel .item + .item { border-top: 2px dotted var(--line); }
+.item-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 10px; }
+.item-title { font-weight: 900; font-size: 18px; }
+#volumeVal { color: var(--violet-d); font-weight: 900; font-variant-numeric: tabular-nums; transition: color 2s ease; }
+.vol { display: flex; align-items: center; gap: 8px; }
+.vol input[type=range] { flex: 1; margin: 0; }
+.spk { width: 22px; height: 22px; flex: none; fill: var(--muted); color: var(--muted); transition: fill 2s ease, color 2s ease; }
+.spk.big { width: 28px; height: 28px; }
+
+.panel .seg { padding: 5px; transition: background 2s ease; }
+.panel .seg button { font-size: 17px; padding: 12px 6px; transition: .3s; }
+.calm-page.dusk .panel .seg { background: rgba(255, 255, 255, .08); }
+.calm-page.dusk .panel .seg button:not(.on) { color: #d6c6ff; }
+.calm-page.dusk .switch span { background: rgba(255, 255, 255, .16); box-shadow: none; }
+.calm-page.dusk .switch input:checked + span { background: linear-gradient(135deg, var(--violet), var(--pink)); }
+.panel .hint { margin-top: 3px; font-size: 14px; }
+
+@media (prefers-reduced-motion: reduce) { .night, .sky .cloud { transition: none !important; } }
+
+/* ---------- кольцо таймера вокруг кнопки ---------- */
+.ring { position: absolute; top: -15px; left: 50%; width: 168px; height: 168px; margin-left: -84px; z-index: 3; pointer-events: none;
+  transform: rotate(-90deg); opacity: 0; transition: opacity .8s ease; }
+.player.timed .ring { opacity: 1; }
+.ring circle { fill: none; stroke-width: 4; }
+.ring-bg { stroke: rgba(155, 108, 255, .16); }
+.ring-fg { stroke: #ffd166; stroke-linecap: round; stroke-dasharray: 502.65; stroke-dashoffset: 0; transition: stroke-dashoffset 1s linear;
+  filter: drop-shadow(0 0 6px rgba(255, 209, 102, .6)); }
+.calm-page.dusk .ring-bg { stroke: rgba(255, 255, 255, .14); }
+
+/* ---------- таймер сна, вид ---------- */
+#sleepLeft { color: var(--violet-d); font-weight: 900; font-variant-numeric: tabular-nums; transition: color 2s ease; }
+.seg.five { padding: 4px; }
+.seg.five button { font-size: 14.5px; padding: 12px 2px; }
+.panel .seg button { white-space: nowrap; }
+
+/* ---------- ночь: очень тёмная и тусклая, для сна ---------- */
+.calm-page.deep { --ink: #e4daf8; --muted: #9b8cc6; --violet-d: #bba5ef; --glass: rgba(255, 255, 255, .05); --glass-line: rgba(255, 255, 255, .11); }
+.calm-page.deep .night { background: radial-gradient(110% 70% at 50% 0%, #1b1450 0%, #0d0a2c 55%, #050317 100%); }
+.calm-page.deep .sky .cloud { opacity: 0; }
+.calm-page.deep .sky .twinkle { filter: brightness(.65); }
+.calm-page.deep .scene::before { opacity: .45; }
+.calm-page.deep .play { box-shadow: 0 10px 28px rgba(60, 40, 140, .5), inset 0 -9px 0 rgba(0, 0, 0, .12); }
+.calm-page.deep::after {                 /* «диммер»: общее приглушение, клики не мешает */
+  content: ""; position: fixed; inset: 0; z-index: 5; pointer-events: none; background: rgba(4, 3, 22, .3);
+}
+
+/* ---------- мягкое появление карточек ---------- */
+@keyframes rise { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+.panel .item { animation: rise .7s ease-out both; }
+.panel .item:nth-child(1) { animation-delay: .05s; } .panel .item:nth-child(2) { animation-delay: .12s; }
+.panel .item:nth-child(3) { animation-delay: .19s; } .panel .item:nth-child(4) { animation-delay: .26s; }
+.panel .item:nth-child(5) { animation-delay: .33s; }
+.player { animation: rise .7s ease-out both; }

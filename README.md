@@ -7,6 +7,9 @@
 - `prep/` — подготовка на Mac (Python): `slice.py` нарезка, `cluster.py` группы, `review.py` страница проверки.
   Пороги — `prep/config.yaml`, категории из заметок — `prep/categories.yaml`.
 - `app/` — статический сайт для iPad (публикуется на GitHub Pages целиком). Только одобренные клипы.
+- `app/calm.html` — режим «для человека»: тихие живые чирики Кима и Чи для успокоения (без микрофона).
+  Планировщик и формулы — `app/js/calm-logic.js`, звук и страница — `app/js/calm.js`, тесты — `tests/calm-logic.test.mjs`.
+  Адрес после публикации: https://nikwave.github.io/kim-chi/calm.html
 - `tests/` — тесты детектора, подбора клипов, лимитов, метрик и совпадения признаков JS↔Python.
 - `docs/ipad-checklist.md` — проверка на iPad без птиц. `docs/veronika.md` — инструкция для сессий.
 - `data/raw/`, `data/clips/` — исходная запись и все клипы, в git не попадают.

@@ -8,3 +8,8 @@ test("app.js стартует без ошибок", () => {
   const out = execFileSync(process.execPath, ["tests/app-smoke.mjs", resolve("app/js/app.js")]).toString();
   assert.match(out, /import ok/);
 });
+
+test("calm.js (режим для человека) стартует без ошибок и без микрофона/wakeLock/audioSession", () => {
+  const out = execFileSync(process.execPath, ["tests/app-smoke.mjs", resolve("app/js/calm.js")]).toString();
+  assert.match(out, /import ok/);
+});
